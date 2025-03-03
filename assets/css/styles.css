@@ -1,6 +1,5 @@
 body {
   font-family: "Roboto", sans-serif;
-  font-weight: 400;
   line-height: 1.5;
   color: #333;
   background-color: #f9fafb;
@@ -88,6 +87,13 @@ p {
 .exp-tracker-day-selector-date-display button {
   font-size: 0.875rem;
   font-weight: 500;
+}
+.exp-tracker-day-selector-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-right: 1rem;
 }
 .exp-tracker-day-selector input[type=date] {
   padding: 0.5rem;
