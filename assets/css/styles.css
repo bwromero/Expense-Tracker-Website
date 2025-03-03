@@ -135,6 +135,19 @@ p {
   width: 100%;
   margin: 1.5rem 0;
 }
+.exp-tracker-actions button {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.exp-tracker-actions button:hover {
+  transform: translateY(-2px);
+}
+.exp-tracker-actions button:hover.income {
+  background-color: #059669;
+}
+.exp-tracker-actions button:hover.expense {
+  background-color: #4f46e5;
+}
 .exp-tracker-actions-button {
   flex: 1;
   padding: 1rem;

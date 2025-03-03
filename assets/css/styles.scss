@@ -22,6 +22,7 @@ $light-blue: #e0e7ff; // Gradient light blue
 $light-white: #f0f9ff; // Gradient light blue
 $balance-text-color: #0369a1; // Balance text color
 $balance-green: #059669; // Balance text color
+$darker-blue: #4f46e5;
 
 // Shades of gray
 $gray-100: #f3f4f6;
@@ -195,6 +196,23 @@ p {
         width: 100%;
         margin: 1.5rem 0;
 
+        button {
+            transition: all 0.2s ease;
+            cursor: pointer;
+
+            &:hover {
+                transform: translateY(-2px);
+
+                &.income {
+                    background-color: $balance-green;
+                }
+
+                &.expense {
+                    background-color: $darker-blue;
+                }
+            }
+        }
+
         &-button {
             flex: 1;
             padding: 1rem;
@@ -203,9 +221,6 @@ p {
             font-size: 1rem;
             font-weight: 600;
 
-            button:hover {
-
-            }
 
             &.income {
                 background-color: $accent-green;
