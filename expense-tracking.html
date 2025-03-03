@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracking</title>
     <link rel="stylesheet" href="assets/css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -17,7 +19,7 @@
             <p class="exp-tracker-balance-amount">$2333.00</p>
         </div>
 
-        <div class="exp-tracker-day-selector">
+        <div class="exp-tracker-day-selector white-container">
             <div class="exp-tracker-day-selector-container">
                 <button class="exp-tracker-day-selector-nav-button">◀</button>
                 <div class="exp-tracker-day-selector-date-display">
@@ -29,12 +31,21 @@
             <input class="exp-tracker-day-selector-date-input" type="date">
         </div>
 
-        <div class="exp-tracker-daily-summary">
+        <div class="exp-tracker-daily-summary ">
 
+            <div class="exp-tracker-daily-summary-income white-container">
+                <h3>Income</h3>
+                <p>$2333.00</p>
+            </div>
+            <div class="exp-tracker-daily-summary-expenses white-container">
+                <h3>Expenses</h3>
+                <p>$2333.00</p>
+            </div>
         </div>
 
         <div class="exp-tracker-actions">
-
+            <button class="exp-tracker-actions-button income">Add Income</button>
+            <button class="exp-tracker-actions-button expense">Add Expense</button>
         </div>
 
         <div class="exp-tracker-list">
@@ -46,6 +57,9 @@
         <div class="exp-tracker-charts"></div>
 
         <div class="exp-tracker-monthly-overview"></div>
+    </div>
+
+
     </div>
 
 </body>
