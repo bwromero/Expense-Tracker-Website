@@ -1,1 +1,98 @@
-/*# sourceMappingURL=styles.css.map */
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f9fafb;
+  color: #1f2937;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h2,
+p {
+  margin: 0;
+}
+
+.exp-tracker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  height: 100vh;
+  max-width: 56rem;
+  margin: 0 auto;
+}
+.exp-tracker-balance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f0f9ff, #e0e7ff);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border: 1px solid #BAE6FE;
+}
+.exp-tracker-balance-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #0369a1;
+}
+.exp-tracker-balance-amount {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #059669;
+}
+.exp-tracker-day-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 0.75rem;
+}
+.exp-tracker-day-selector button,
+.exp-tracker-day-selector input[type=submit],
+.exp-tracker-day-selector input[type=reset] {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #6366f1;
+  font-size: 1.2rem;
+}
+.exp-tracker-day-selector-date-display {
+  display: flex;
+  flex-direction: column;
+}
+.exp-tracker-day-selector-date-display p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.exp-tracker-day-selector-date-display button {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.exp-tracker-day-selector input[type=date] {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  font-family: inherit;
+}/*# sourceMappingURL=styles.css.map */
