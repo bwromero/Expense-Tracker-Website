@@ -118,6 +118,19 @@ p {
             padding: 0;
             color: $primary-blue;
             font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        &-nav-button {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+            align-items: center;
+            justify-content: center;
+            &:hover {
+                background-color: $border-color;
+            }
         }
 
         &-date-display {
@@ -133,6 +146,15 @@ p {
             button {
                 font-size: 0.875rem;
                 font-weight: 500;
+                border-radius: 0.3rem;
+                padding: 0.25rem 0.5rem;
+                transition: background-color 0.2s ease;
+                width: fit-content;
+                align-self: center;
+
+                &:hover {
+                    background-color: $border-color;
+                }
 
             }
         }
@@ -142,7 +164,7 @@ p {
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            margin-left: 1rem;
+            margin-left: 2rem;
             margin-right: 1rem;
         }
 

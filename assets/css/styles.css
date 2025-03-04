@@ -77,6 +77,18 @@ p {
   padding: 0;
   color: #6366f1;
   font-size: 1.2rem;
+  cursor: pointer;
+}
+.exp-tracker-day-selector-nav-button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  align-items: center;
+  justify-content: center;
+}
+.exp-tracker-day-selector-nav-button:hover {
+  background-color: #e5e7eb;
 }
 .exp-tracker-day-selector-date-display {
   display: flex;
@@ -90,13 +102,22 @@ p {
 .exp-tracker-day-selector-date-display button {
   font-size: 0.875rem;
   font-weight: 500;
+  border-radius: 0.3rem;
+  padding: 0.25rem 0.5rem;
+  transition: background-color 0.2s ease;
+  width: -moz-fit-content;
+  width: fit-content;
+  align-self: center;
+}
+.exp-tracker-day-selector-date-display button:hover {
+  background-color: #e5e7eb;
 }
 .exp-tracker-day-selector-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-left: 1rem;
+  margin-left: 2rem;
   margin-right: 1rem;
 }
 .exp-tracker-day-selector input[type=date] {
