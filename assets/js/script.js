@@ -1,6 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
     const dropdowns = document.querySelectorAll('.exp-tracker-category-manager-dropdown');
-    
+    const prevButton = document.querySelector('.exp-tracker-day-selector-nav-button:first-of-type');
+    const nextButton = document.querySelector('.exp-tracker-day-selector-nav-button:last-of-type');
+    const dateInput = document.querySelector('#day-selector-date-input');
+    const dateDisplay = document.querySelector('#day-selector-date-display');
+
+    dateInput.setAttribute('value', new Date().toISOString().split('T')[0]);
+    dateDisplay.textContent = formatDateInItalian(dateInput.value);
+
+    dateInput.addEventListener('change', function() {
+        dateDisplay.textContent = formatDateInItalian(this.value);
+    });
+
+    // Previous button click handler
+    prevButton.addEventListener('click', function() {
+        console.log('Previous day button clicked');
+        // We go back 1 day from the current date in the dateInput and update the dateDisplay
+    });
+
+    // Next button click handler
+    nextButton.addEventListener('click', function() {
+        console.log('Next day button clicked');
+        // Add your logic for going to next day here
+    });
+
     dropdowns.forEach(dropdown => {
         dropdown.addEventListener('click', function() {
             // Find the next sibling which is the content
@@ -18,3 +41,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 }); 
+
+function formatDateInItalian(dateString) {
+    const date = new Date(dateString);
+    const weekdays = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
+    const months = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+    
+    const dayOfWeek = weekdays[date.getDay()];
+    const dayOfMonth = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    
+    return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
+}
