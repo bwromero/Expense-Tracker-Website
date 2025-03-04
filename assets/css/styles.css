@@ -43,7 +43,7 @@ p {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 2rem;
+  padding: 2rem 0;
   background: linear-gradient(135deg, #f0f9ff, #e0e7ff);
   border-radius: 0.75rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
@@ -67,7 +67,7 @@ p {
   justify-content: space-between;
   width: 100%;
   margin: 1.5rem 0;
-  padding: 1rem;
+  padding: 1rem 0;
 }
 .exp-tracker-day-selector button,
 .exp-tracker-day-selector input[type=submit],
@@ -96,6 +96,7 @@ p {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin-left: 1rem;
   margin-right: 1rem;
 }
 .exp-tracker-day-selector input[type=date] {
@@ -104,6 +105,7 @@ p {
   border: 1px solid #e5e7eb;
   font-size: 0.875rem;
   font-family: inherit;
+  margin-right: 1rem;
 }
 .exp-tracker-daily-summary {
   display: flex;
@@ -191,8 +193,6 @@ p {
 }
 .exp-tracker-category-manager-dropdown-content {
   padding: 1rem;
-  display: none;
-  transition: all 0.3s ease;
 }
 .exp-tracker-charts {
   width: 100%;

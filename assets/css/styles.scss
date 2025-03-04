@@ -81,7 +81,7 @@ p {
         align-items: center;
         justify-content: center;
         width: 100%;
-        padding: 2rem;
+        padding: 2rem 0;
         background: linear-gradient(135deg, $light-white, $light-blue);
         border-radius: 0.75rem;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
@@ -108,7 +108,7 @@ p {
         justify-content: space-between;
         width: 100%;
         margin: 1.5rem 0;
-        padding: 1rem;
+        padding: 1rem 0;
 
         button,
         input[type="submit"],
@@ -142,6 +142,7 @@ p {
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            margin-left: 1rem;
             margin-right: 1rem;
         }
 
@@ -151,6 +152,7 @@ p {
             border: 1px solid $border-color;
             font-size: 0.875rem;
             font-family: inherit;
+            margin-right: 1rem;
         }
 
     }
