@@ -15,9 +15,9 @@ h6 {
   font-family: "Inter", sans-serif;
   font-weight: 600;
   line-height: 1.2;
+  margin: 0;
 }
 
-h2,
 p {
   margin: 0;
 }
@@ -163,4 +163,41 @@ p {
 .exp-tracker-actions-button.expense {
   background-color: #6366f1;
   color: #ffffff;
+}
+.exp-tracker-list p {
+  padding: 1rem;
+  color: #6b7280;
+}
+.exp-tracker-category-manager {
+  width: 100%;
+}
+.exp-tracker-category-manager h2 {
+  margin-bottom: 1.5rem;
+}
+.exp-tracker-category-manager-dropdown {
+  display: flex;
+  padding: 1rem;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.exp-tracker-category-manager-dropdown:hover {
+  background-color: #f9fafb;
+}
+.exp-tracker-category-manager-dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.exp-tracker-category-manager-dropdown-content {
+  padding: 1rem;
+  display: none;
+  transition: all 0.3s ease;
+}
+.exp-tracker-charts {
+  width: 100%;
+  margin: 2rem 0;
+}
+.exp-tracker-charts h2 {
+  margin-bottom: 1.5rem;
 }/*# sourceMappingURL=styles.css.map */

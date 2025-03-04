@@ -51,9 +51,9 @@ h6 {
     font-family: $font-primary;
     font-weight: 600;
     line-height: 1.2;
+    margin: 0;
 }
 
-h2,
 p {
     margin: 0;
 }
@@ -235,4 +235,50 @@ p {
         }
         
     }
+
+    &-list {
+        p {
+            padding: 1rem;
+            color: $text-light;
+        }
+    }
+
+    &-category-manager {
+        width: 100%;
+        h2 {
+
+            margin-bottom: 1.5rem;
+        }
+
+        &-dropdown {
+            display: flex;
+            padding: 1rem;
+            justify-content: space-between;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $background-light;
+            }
+                   
+            &-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            &-content {
+                padding: 1rem;
+            }
+        }
+    }
+
+    &-charts {
+        width: 100%;
+        margin: 2rem 0;
+        h2 {
+            margin-bottom: 1.5rem;
+        }
+    }
+    
 }

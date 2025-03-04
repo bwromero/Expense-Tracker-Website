@@ -50,11 +50,33 @@
 
         <div class="exp-tracker-list">
 
+            <p class="exp-tracker-list-empty">No transactions found</p>
         </div>
 
-        <div class="exp-tracker-category-manager"></div>
+        <div class="exp-tracker-category-manager">
+            <h2>Transactions by Category</h2>
 
-        <div class="exp-tracker-charts"></div>
+            <div class="exp-tracker-category-manager-dropdown white-container">
+                <h3>Food</h3>
+                <div class="exp-tracker-category-manager-dropdown-header">
+                    <p>1 transaction</p>
+                    <p>-$12.00</p>
+                    <span>▼</span>
+                </div>
+            </div>
+            <div class="exp-tracker-category-manager-dropdown-content white-container">
+                <ul>
+                    <li>
+                        <div></div>
+                        <div></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exp-tracker-charts">
+            <h2>Expense Analysis</h2>
+        </div>
 
         <div class="exp-tracker-monthly-overview"></div>
     </div>
@@ -62,6 +84,28 @@
 
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.exp-tracker-category-manager-dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function() {
+                    // Find the next sibling which is the content
+                    const content = this.nextElementSibling;
+                    const arrow = this.querySelector('.exp-tracker-category-manager-dropdown-header span');
+                    
+                    // Toggle visibility
+                    if (content.style.display === 'none' || !content.style.display) {
+                        content.style.display = 'block';
+                        arrow.textContent = '▲';
+                    } else {
+                        content.style.display = 'none';
+                        arrow.textContent = '▼';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
