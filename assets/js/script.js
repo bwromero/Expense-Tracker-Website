@@ -4,18 +4,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextButton = document.querySelector('.exp-tracker-day-selector-nav-button:last-of-type');
     const dateInput = document.querySelector('#day-selector-date-input');
     const dateDisplay = document.querySelector('#day-selector-date-display');
+    const todayButton = document.querySelector('#day-selector-today-button');
 
     dateInput.setAttribute('value', new Date().toISOString().split('T')[0]);
     dateDisplay.textContent = formatDateInItalian(dateInput.value);
 
+    // Date input change handler
     dateInput.addEventListener('change', function() {
         dateDisplay.textContent = formatDateInItalian(this.value);
     });
 
+    // Today button click handler
+    todayButton.addEventListener('click', function() {
+        const date = new Date();
+        const formattedDate = date.toISOString().split('T')[0];
+        
+        dateDisplay.textContent = formatDateInItalian(date);
+        dateInput.value = formattedDate;
+    });
+
     // Previous button click handler
     prevButton.addEventListener('click', function() {
-        console.log('Previous day button clicked');
         // We go back 1 day from the current date in the dateInput and update the dateDisplay
+        
     });
 
     // Next button click handler
