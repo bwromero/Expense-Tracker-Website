@@ -185,10 +185,11 @@ document.addEventListener('DOMContentLoaded', function () {
         detailsTextDiv.innerText = transaction.description;
         const metaDataDiv = document.createElement("div");
         const spanData = document.createElement("span");
-        const spanTransactionType = document.createElement("span");
+        const spanTransactionCategory = document.createElement("span");
+        spanTransactionCategory.innerText = ` ${transaction.category || "income"}`;
         spanData.innerText = formatDateInItalian(dateInput.value, true);
         metaDataDiv.appendChild(spanData);
-        metaDataDiv.appendChild(spanTransactionType);
+        metaDataDiv.appendChild(spanTransactionCategory);
 
         detailsDiv.appendChild(detailsTextDiv);
         detailsDiv.appendChild(metaDataDiv);
