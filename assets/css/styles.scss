@@ -134,6 +134,14 @@ p {
                 font-size: 1rem;
             }
 
+            .primary {
+                background-color: $primary-blue;
+                color: $background-light;
+                &:hover {
+                    background-color: $darker-blue;;
+                }
+            }
+
             button {
                 color: $darker-blue;
                 &:hover {
