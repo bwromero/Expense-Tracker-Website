@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const addExpenseButton = document.getElementById('add-expense-button');
     const addIncomeModal = document.getElementById('add-income-modal');
     const addExpenseModal = document.getElementById('add-expense-modal');
-    const addIncomeModalButtons = addIncomeModal.querySelectorAll(".exp-tracker-modal-actions button");
+    const modalButtons = document.querySelectorAll(".exp-tracker-modal-actions button");
     const addIncomeModalParent = addIncomeModal.parentElement;
     const addButtons = [addIncomeButton, addExpenseButton];
 
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
     })
 
-    addIncomeModalButtons.forEach((button) => {
+    modalButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             event.preventDefault();
 
@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(button.textContent.trim() ===  'Cancel') {
                 addIncomeModalParent.style.display = 'none';
                 addIncomeModal.style.display = 'none';
+                addExpenseModal.style.display = 'none';
             }
         })
     })
