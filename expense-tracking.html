@@ -17,7 +17,7 @@
 
         <div class="exp-tracker-modal-overlay">
 
-            <div class="exp-tracker-modal-content">
+            <div class="exp-tracker-modal-content" id="add-income-modal">
                 <h2>Add Income for Friday, March 14, 2025</h2>
 
                 <form action="submit" class="exp-tracker-modal-form">
@@ -35,13 +35,12 @@
                     </div>
                 </form>
             </div>
-            
-
         </div>
 
         <div class="exp-tracker-balance">
             <h2 class="exp-tracker-balance-title">Current Balance</h2>
             <p class="exp-tracker-balance-amount">$2333.00</p>
+            <div class="exp-tracker-modal-content" id="add-expense-modal">
         </div>
 
         <div class="exp-tracker-day-selector white-container">
@@ -69,8 +68,8 @@
         </div>
 
         <div class="exp-tracker-actions">
-            <button class="exp-tracker-actions-button income">Add Income</button>
-            <button class="exp-tracker-actions-button expense">Add Expense</button>
+            <button class="exp-tracker-actions-button income" id="add-income-button">Add Income</button>
+            <button class="exp-tracker-actions-button expense" id="add-expense-button">Add Expense</button>
         </div>
 
         <div class="exp-tracker-list">
@@ -98,12 +97,6 @@
                 </ul>
             </div>
         </div>
-
-        <div class="exp-tracker-charts">
-            <h2>Expense Analysis</h2>
-        </div>
-
-        <div class="exp-tracker-monthly-overview"></div>
     </div>
 
     <script src="assets/js/script.js"></script>

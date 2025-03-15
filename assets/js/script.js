@@ -7,6 +7,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevButton = document.querySelector('.exp-tracker-day-selector-nav-button:first-of-type');
     const nextButton = document.querySelector('.exp-tracker-day-selector-nav-button:last-of-type');
     const todayButton = document.querySelector('#day-selector-today-button');
+    const addIncomeButton = document.getElementById('add-income-button');
+    const addExpenseButton = document.getElementById('add-expense-button');
+    const addIncomeModal = document.getElementById('add-income-modal');
+    const addExpenseModal = document.getElementById('add-expense-modal');
+    const addIncomeModalButtons = addIncomeModal.querySelectorAll(".exp-tracker-modal-actions button");
+    const addIncomeModalParent = addIncomeModal.parentElement;
+    const addButtons = [addIncomeButton, addExpenseButton];
+
+    addButtons.forEach(button => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            if(button.innerText === 'Add Income') {
+                addIncomeModalParent.style.display = 'flex';
+            }
+
+            
+            if(button.innerText === 'Add Expense') {
+                addIncomeModalParent.style.display = 'flex';
+                addExpenseModal.style.display = 'flex';
+            }
+        })
+    })
+
+    addIncomeModalButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            if(button.textContent.trim() ===  'Add income') { 
+                // we add income so call post api ecc
+            }
+
+            if(button.textContent.trim() ===  'Cancel') {
+                addIncomeModalParent.style.display = 'none';
+            }
+        })
+    })
+
 
     dateInput.setAttribute('value', new Date().toISOString().split('T')[0]);
     dateDisplay.textContent = formatDateInItalian(dateInput.value);
