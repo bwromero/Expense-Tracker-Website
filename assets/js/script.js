@@ -18,6 +18,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const categorySelect = categoryFormGroup.children[1];
     const addButtons = [addIncomeButton, addExpenseButton];
 
+    // Init category input
+    const categoryInput = document.createElement("input");
+    categoryInput.type = "text";
+    categoryInput.placeholder = "Enter new category name";
+
+    // Create Save category button
+    const saveCategoryButton = document.createElement("button");
+    saveCategoryButton.textContent = "Save";
+    saveCategoryButton.classList.add("primary");
+
+    // Create Cancel category button
+    const cancelCategoryBtn = document.createElement("button");
+    cancelCategoryBtn.textContent = "Cancel";
+
     addButtons.forEach(button => {
         button.addEventListener("click", (event) => {
             event.preventDefault();
@@ -51,42 +65,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addCategoryButton.addEventListener("click", (event) => {
         event.preventDefault();
-        const categoryInput = document.createElement("input");
-        categoryInput.type = "text";
-        categoryInput.placeholder = "Enter new category name";
-
-        // Create Save button
-        const saveBtn = document.createElement("button");
-        saveBtn.textContent = "Save";
-        saveBtn.classList.add("primary");
-
-        // Create Cancel button
-        const cancelBtn = document.createElement("button");
-        cancelBtn.textContent = "Cancel";
-
-        cancelBtn.addEventListener("click", (event) => {
-            event.preventDefault();
-            categorySelect.style.display = 'block';
-            addCategoryButton.style.display = 'block';
-            categoryInput.remove();
-            saveBtn.remove();
-            cancelBtn.remove();
-        })
-
-        // Prevent "Enter" from creating more inputs
-        categoryInput.addEventListener("keydown", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                saveBtn.click(); // Simulate clicking the save button
-            }
-        });
-
         categorySelect.style.display = 'none';
         addCategoryButton.style.display = 'none';
         categoryFormGroup.appendChild(categoryInput);
-        categoryFormGroup.appendChild(saveBtn);
-        categoryFormGroup.appendChild(cancelBtn);
+        categoryFormGroup.appendChild(saveCategoryButton);
+        categoryFormGroup.appendChild(cancelCategoryBtn);
     })
+
+    // Prevent "Enter" from creating more inputs
+    categoryInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            saveCategoryButton.click(); // Simulate clicking the save button
+        }
+    });
+
+    cancelCategoryBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        categorySelect.style.display = 'block';
+        addCategoryButton.style.display = 'block';
+        removeSaveCategoryButtons();
+    })
+
+    removeSaveCategoryButtons = () => {
+        categoryInput.remove();
+        saveCategoryButton.remove();
+        cancelCategoryBtn.remove();
+    }
 
     dateInput.setAttribute('value', new Date().toISOString().split('T')[0]);
     dateDisplay.textContent = formatDateInItalian(dateInput.value);
