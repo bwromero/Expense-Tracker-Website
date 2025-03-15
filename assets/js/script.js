@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const deleteButton = document.createElement("button");
         editButton.textContent = "Edit";
         deleteButton.textContent = "Delete";
-        amountTextDiv.innerText = `$${transaction.amount}` ;
+        amountTextDiv.innerText = `${transaction.category? "-" : "+"} $${transaction.amount}` ;
         rightSectionDiv.appendChild(amountTextDiv);
         actionButtonsDiv.appendChild(editButton);
         actionButtonsDiv.appendChild(deleteButton);
