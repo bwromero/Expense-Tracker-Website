@@ -18,14 +18,13 @@ document.addEventListener('DOMContentLoaded', function() {
     addButtons.forEach(button => {
         button.addEventListener("click", (event) => {
             event.preventDefault();
+            addIncomeModalParent.style.display = 'flex';
 
             if(button.innerText === 'Add Income') {
-                addIncomeModalParent.style.display = 'flex';
+                addIncomeModal.style.display = 'flex';
             }
-
             
             if(button.innerText === 'Add Expense') {
-                addIncomeModalParent.style.display = 'flex';
                 addExpenseModal.style.display = 'flex';
             }
         })
@@ -41,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if(button.textContent.trim() ===  'Cancel') {
                 addIncomeModalParent.style.display = 'none';
+                addIncomeModal.style.display = 'none';
             }
         })
     })

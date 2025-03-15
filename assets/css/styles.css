@@ -53,6 +53,15 @@ p {
   background-color: #ffffff;
   padding: 2rem;
   border-radius: 0.5rem;
+  display: none;
+  flex-direction: column;
+}
+.exp-tracker-modal-content button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  cursor: pointer;
 }
 .exp-tracker-modal-content h2 {
   margin-bottom: 1.5rem;
@@ -70,7 +79,7 @@ p {
 .exp-tracker-modal-form-group label {
   font-weight: 500;
 }
-.exp-tracker-modal-form-group input {
+.exp-tracker-modal-form-group input, .exp-tracker-modal-form-group select {
   padding: 0.75rem;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
@@ -81,13 +90,6 @@ p {
   justify-content: end;
   gap: 1rem;
   margin-top: 1.5rem;
-}
-.exp-tracker-modal-actions button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
-  cursor: pointer;
 }
 .exp-tracker-modal-actions :first-child {
   background-color: #6366f1;

@@ -35,6 +35,30 @@
                     </div>
                 </form>
             </div>
+
+            <div class="exp-tracker-modal-content" id="add-expense-modal">
+                <h2>Add Expense</h2>
+
+                <form action="submit" class="exp-tracker-modal-form">
+                    <div class="exp-tracker-modal-form-group">
+                        <label for="">Description</label>
+                        <input type="text">
+                    </div>
+                    <div class="exp-tracker-modal-form-group">
+                        <label for="">Amount</label>
+                        <input type="number">
+                    </div>
+                    <div class="exp-tracker-modal-form-group">
+                        <label for="category">Category</label>
+                        <select name="category" id="category-select"></select>
+                        <button id="new-category-button">+ New Category</button>
+                    </div>
+                    <div class="exp-tracker-modal-actions">
+                        <button>Add Expense</button>
+                        <button>Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div class="exp-tracker-balance">
