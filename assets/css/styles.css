@@ -85,6 +85,12 @@ p {
   border-radius: 0.5rem;
   font-size: 1rem;
 }
+.exp-tracker-modal-form-group button {
+  color: #4f46e5;
+}
+.exp-tracker-modal-form-group button:hover {
+  background-color: #f9fafb;
+}
 .exp-tracker-modal-actions {
   display: flex;
   justify-content: end;
