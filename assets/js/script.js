@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 addIncomeModalParent.style.display = 'none';
                 addIncomeModal.style.display = 'none';
                 addExpenseModal.style.display = 'none';
+                removeSaveCategoryButtons();
             }
         })
     })
