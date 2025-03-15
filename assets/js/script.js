@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener("click", (event) => {
             event.preventDefault();
             addIncomeModalParent.style.display = 'flex';
-            addIncomeModalParent.style.justifyContent = "space-between";
 
             if (button.innerText === 'Add Income') {
                 addIncomeModal.style.display = 'flex';
@@ -160,9 +159,10 @@ document.addEventListener('DOMContentLoaded', function () {
         addIncomeModalParent.style.display = "none";
         emptyListParagraph.style.display = "none";
         
-
         const li = document.createElement("li");
         li.style.display = 'flex';
+        li.style.justifyContent = "space-between";
+
 
         const detailsDiv = document.createElement("div");
         detailsDiv.innerText = [transaction.description, transaction.amount].join(" ");
