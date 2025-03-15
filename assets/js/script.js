@@ -181,10 +181,30 @@ document.addEventListener('DOMContentLoaded', function () {
         const li = document.createElement("li");
 
         const detailsDiv = document.createElement("div");
-        detailsDiv.innerText = [transaction.description, transaction.amount].join(" ");
+        const detailsTextDiv = document.createElement("div");
+        detailsTextDiv.innerText = transaction.description;
+        const metaDataDiv = document.createElement("div");
+        const spanData = document.createElement("span");
+        const spanTransactionType = document.createElement("span");
+        spanData.innerText = formatDateInItalian(dateInput.value, true);
+        metaDataDiv.appendChild(spanData);
+        metaDataDiv.appendChild(spanTransactionType);
+
+        detailsDiv.appendChild(detailsTextDiv);
+        detailsDiv.appendChild(metaDataDiv);
 
         const rightSectionDiv = document.createElement("div");
-        rightSectionDiv.innerText = "Testtt"
+        const amountTextDiv = document.createElement("div");
+        const actionButtonsDiv = document.createElement("div");
+        const editButton = document.createElement("button");
+        const deleteButton = document.createElement("button");
+        editButton.textContent = "Edit";
+        deleteButton.textContent = "Delete";
+        amountTextDiv.innerText = `$${transaction.amount}` ;
+        rightSectionDiv.appendChild(amountTextDiv);
+        actionButtonsDiv.appendChild(editButton);
+        actionButtonsDiv.appendChild(deleteButton);
+        rightSectionDiv.appendChild(actionButtonsDiv);
 
         // Append all elements to list item
         li.appendChild(detailsDiv);
@@ -195,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-function formatDateInItalian(dateString) {
+function formatDateInItalian(dateString, short) {
     const date = new Date(dateString);
     const weekdays = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
     const months = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
@@ -205,7 +225,9 @@ function formatDateInItalian(dateString) {
     const month = months[date.getMonth()];
     const year = date.getFullYear();
 
-    return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
+    const formatedData = short?  `${dayOfMonth} ${month.slice(0,3)} ${year}`:  `${dayOfWeek} ${dayOfMonth} ${month} ${year}`
+
+    return formatedData;
 }
 
 function addDays(dateString, days) {
