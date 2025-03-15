@@ -58,19 +58,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let transaction = {
                 description: "",
-                amount: ""
+                amount: "",
+                category: ""
             };
 
             if (button.textContent.trim() === 'Add income') {
                 // we add an item to the container and to the transactions by category 
 
                 const formData = new FormData(addIncomeForm); // Capture form data
-
                 transaction.description = formData.get("description");
                 transaction.amount = formData.get("amount");
 
                 addTransaction(transaction);
+                addIncomeForm.reset();
+                transaction.description = "";
+                transaction.amount = "";
 
+            }
+
+            if (button.textContent.trim() === 'Add expense') {
+                // we add an item to the container and to the transactions by category 
+                const formData = new FormData(addExpenseForm); // Capture form data
+                transaction.description = formData.get("description");
+                transaction.amount = formData.get("amount");
+                transaction.category = formData.get("category");
+
+                addTransaction(transaction);
+                addIncomeForm.reset();
+                transaction.description = "";
+                transaction.amount = "";
+                transaction.category = "";
             }
 
             if (button.textContent.trim() === 'Cancel') {
@@ -162,7 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const li = document.createElement("li");
         li.style.display = 'flex';
         li.style.justifyContent = "space-between";
-
 
         const detailsDiv = document.createElement("div");
         detailsDiv.innerText = [transaction.description, transaction.amount].join(" ");
