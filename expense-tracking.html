@@ -22,12 +22,12 @@
 
                 <form action="submit" class="exp-tracker-modal-form">
                     <div class="exp-tracker-modal-form-group">
-                        <label for="">Description</label>
-                        <input type="text">
+                        <label for="description">Description</label>
+                        <input type="text" name="description">
                     </div>
                     <div class="exp-tracker-modal-form-group">
-                        <label for="">Amount</label>
-                        <input type="number">
+                        <label for="" name="amount">Amount</label>
+                        <input type="number" name="amount">
                     </div>
                     <div class="exp-tracker-modal-actions">
                         <button>Add income</button>
@@ -98,7 +98,11 @@
         <div class="exp-tracker-list">
 
             <p class="exp-tracker-list-empty">No transactions found</p>
-        </div>
+
+            <div class="exp-tracker-list-container">
+                <ul class="exp-tracker-list-items"></ul>
+            </div>
+        </div>  
 
         <div class="exp-tracker-category-manager">
             <h2>Transactions by Category</h2>

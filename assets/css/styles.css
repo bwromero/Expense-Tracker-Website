@@ -264,6 +264,9 @@ p {
   background-color: #6366f1;
   color: #ffffff;
 }
+.exp-tracker-list {
+  width: 100%;
+}
 .exp-tracker-list p {
   padding: 1rem;
   color: #6b7280;

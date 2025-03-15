@@ -13,10 +13,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const addExpenseModal = document.getElementById('add-expense-modal');
     const modalButtons = document.querySelectorAll(".exp-tracker-modal-actions button");
     const addIncomeModalParent = addIncomeModal.parentElement;
+    const addIncomeForm = addIncomeModal.querySelector("form");
+    const addExpenseForm = addExpenseModal.querySelector("form");
     const categoryFormGroup = document.getElementById("category-form-group");
     const addCategoryButton = categoryFormGroup.children[2];
     const categorySelect = categoryFormGroup.children[1];
     const addButtons = [addIncomeButton, addExpenseButton];
+    const transactionList = document.querySelector(".exp-tracker-list-items");
+    const emptyListParagraph = document.querySelector(".exp-tracker-list-empty");
 
     // Init category input
     const categoryInput = document.createElement("input");
@@ -36,9 +40,11 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener("click", (event) => {
             event.preventDefault();
             addIncomeModalParent.style.display = 'flex';
+            addIncomeModalParent.style.justifyContent = "space-between";
 
             if (button.innerText === 'Add Income') {
                 addIncomeModal.style.display = 'flex';
+    
             }
 
             if (button.innerText === 'Add Expense') {
@@ -51,8 +57,21 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener("click", (event) => {
             event.preventDefault();
 
+            let transaction = {
+                description: "",
+                amount: ""
+            };
+
             if (button.textContent.trim() === 'Add income') {
-                // we add income so call post api ecc
+                // we add an item to the container and to the transactions by category 
+
+                const formData = new FormData(addIncomeForm); // Capture form data
+
+                transaction.description = formData.get("description");
+                transaction.amount = formData.get("amount");
+
+                addTransaction(transaction);
+
             }
 
             if (button.textContent.trim() === 'Cancel') {
@@ -133,6 +152,36 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    function addTransaction(transaction) {
+
+        // we call post api if response is ok we run the code below
+
+        addIncomeModalParent.style.display = "none";
+        emptyListParagraph.style.display = "none";
+        
+
+        const li = document.createElement("li");
+        li.style.display = 'flex';
+
+        const detailsDiv = document.createElement("div");
+        detailsDiv.innerText = [transaction.description, transaction.amount].join(" ");
+
+        const rightSectionDiv = document.createElement("div");
+        rightSectionDiv.innerText = "Testtt"
+
+
+        // Append all elements to list item
+        li.appendChild(detailsDiv);
+        li.appendChild(rightSectionDiv);
+
+
+
+        // Append list item to the unordered list
+        transactionList.appendChild(li);
+
+
+    }
 });
 
 function formatDateInItalian(dateString) {
