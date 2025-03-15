@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 addIncomeForm.reset();
                 transaction.description = "";
                 transaction.amount = "";
+                addIncomeModal.style.display = "none";
 
             }
 
@@ -88,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 transaction.description = "";
                 transaction.amount = "";
                 transaction.category = "";
+                addExpenseModal.style.display = "none";
             }
 
             if (button.textContent.trim() === 'Cancel') {
@@ -177,8 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
         emptyListParagraph.style.display = "none";
         
         const li = document.createElement("li");
-        li.style.display = 'flex';
-        li.style.justifyContent = "space-between";
 
         const detailsDiv = document.createElement("div");
         detailsDiv.innerText = [transaction.description, transaction.amount].join(" ");
@@ -186,17 +186,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const rightSectionDiv = document.createElement("div");
         rightSectionDiv.innerText = "Testtt"
 
-
         // Append all elements to list item
         li.appendChild(detailsDiv);
         li.appendChild(rightSectionDiv);
 
-
-
         // Append list item to the unordered list
         transactionList.appendChild(li);
-
-
     }
 });
 

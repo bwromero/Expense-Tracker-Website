@@ -272,6 +272,18 @@ p {
   padding: 1rem;
   color: #6b7280;
 }
+.exp-tracker-list ul {
+  list-style: none;
+  padding: 0;
+}
+.exp-tracker-list ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
 .exp-tracker-category-manager {
   width: 100%;
 }

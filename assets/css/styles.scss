@@ -368,6 +368,19 @@ p {
             padding: 1rem;
             color: $text-light;
         }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+                border-bottom: 1px solid $border-color;
+                transition: background-color .2s;
+            }
+        }
     }
 
     &-category-manager {
