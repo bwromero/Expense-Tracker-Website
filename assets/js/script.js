@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 addIncomeModalParent.style.display = 'none';
                 addIncomeModal.style.display = 'none';
                 addExpenseModal.style.display = 'none';
-                removeSaveCategoryButtons();
+                toggleCategoryElements();
             }
         })
     })
@@ -83,12 +83,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     cancelCategoryBtn.addEventListener("click", (event) => {
         event.preventDefault();
-        categorySelect.style.display = 'block';
-        addCategoryButton.style.display = 'block';
-        removeSaveCategoryButtons();
+        toggleCategoryElements();
     })
 
-    removeSaveCategoryButtons = () => {
+    toggleCategoryElements = () => {
+        categorySelect.style.display = 'block';
+        addCategoryButton.style.display = 'block';
         categoryInput.remove();
         saveCategoryButton.remove();
         cancelCategoryBtn.remove();
