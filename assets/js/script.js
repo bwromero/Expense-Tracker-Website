@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const spanTransactionCategory = document.createElement("span");
         spanTransactionCategory.innerText = ` ${transaction.category || "income"}`;
         spanData.innerText = formatDateInItalian(dateInput.value, true);
+
         metaDataDiv.appendChild(spanData);
         metaDataDiv.appendChild(spanTransactionCategory);
 
@@ -200,13 +201,19 @@ document.addEventListener('DOMContentLoaded', function () {
         detailsDiv.appendChild(metaDataDiv);
 
         const rightSectionDiv = document.createElement("div");
+        rightSectionDiv.classList.add("exp-tracker-list-right-section");
         const amountTextDiv = document.createElement("div");
         const actionButtonsDiv = document.createElement("div");
+        actionButtonsDiv.classList.add("exp-tracker-list-buttons")
         const editButton = document.createElement("button");
         const deleteButton = document.createElement("button");
         editButton.textContent = "Edit";
         deleteButton.textContent = "Delete";
         amountTextDiv.innerText = `${transaction.category? "-" : "+"} $${transaction.amount}` ;
+        amountTextDiv.classList.add("exp-tracker-list-amount", transaction.category? "expense":"income");
+
+
+
         rightSectionDiv.appendChild(amountTextDiv);
         actionButtonsDiv.appendChild(editButton);
         actionButtonsDiv.appendChild(deleteButton);

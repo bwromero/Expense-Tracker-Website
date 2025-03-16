@@ -79,7 +79,8 @@ p {
 .exp-tracker-modal-form-group label {
   font-weight: 500;
 }
-.exp-tracker-modal-form-group input, .exp-tracker-modal-form-group select {
+.exp-tracker-modal-form-group input,
+.exp-tracker-modal-form-group select {
   padding: 0.75rem;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
@@ -294,6 +295,48 @@ p {
   font-size: 0.875rem;
   color: #6b7280;
   font-weight: 200;
+}
+.exp-tracker-list-amount {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.exp-tracker-list-amount.income {
+  color: #10b981;
+}
+.exp-tracker-list-amount.expense {
+  color: #ef4444;
+}
+.exp-tracker-list-right-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+.exp-tracker-list-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+.exp-tracker-list-buttons button {
+  padding: 0.25rem 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.exp-tracker-list-buttons :first-child {
+  color: #1f2937;
+}
+.exp-tracker-list-buttons :first-child:hover {
+  background-color: #6b7280;
+  color: #ffffff;
+}
+.exp-tracker-list-buttons :last-child {
+  background-color: #ef4444;
+  color: #f0f9ff;
+}
+.exp-tracker-list-buttons :last-child:hover {
+  background-color: #e11d48;
 }
 .exp-tracker-category-manager {
   width: 100%;
