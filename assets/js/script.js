@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 transaction.category = formData.get("category");
 
                 addTransaction(transaction);
-                addIncomeForm.reset();
+                addExpenseForm.reset();
                 transaction.description = "";
                 transaction.amount = "";
                 transaction.category = "";
@@ -97,6 +97,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 addIncomeModal.style.display = 'none';
                 addExpenseModal.style.display = 'none';
                 toggleCategoryElements();
+                addIncomeForm.reset();
+                addExpenseForm.reset();
+
             }
         })
     })
