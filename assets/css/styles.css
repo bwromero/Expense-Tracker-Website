@@ -284,6 +284,17 @@ p {
   border-bottom: 1px solid #e5e7eb;
   transition: background-color 0.2s;
 }
+.exp-tracker-list-description {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+.exp-tracker-list-metadata {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 200;
+}
 .exp-tracker-category-manager {
   width: 100%;
 }

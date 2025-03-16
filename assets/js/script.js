@@ -186,7 +186,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const detailsDiv = document.createElement("div");
         const detailsTextDiv = document.createElement("div");
         detailsTextDiv.innerText = transaction.description;
+        detailsTextDiv.classList.add("exp-tracker-list-description");
         const metaDataDiv = document.createElement("div");
+        metaDataDiv.classList.add("exp-tracker-list-metadata");
         const spanData = document.createElement("span");
         const spanTransactionCategory = document.createElement("span");
         spanTransactionCategory.innerText = ` ${transaction.category || "income"}`;
