@@ -3,7 +3,6 @@ const dateInput = document.querySelector('#day-selector-date-input');
 const dateDisplay = document.querySelector('#day-selector-date-display');
 
 document.addEventListener('DOMContentLoaded', function () {
-    const dropdowns = document.querySelectorAll('.exp-tracker-category-manager-dropdown');
     const prevButton = document.querySelector('.exp-tracker-day-selector-nav-button:first-of-type');
     const nextButton = document.querySelector('.exp-tracker-day-selector-nav-button:last-of-type');
     const todayButton = document.querySelector('#day-selector-today-button');
@@ -157,23 +156,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Next button click handler
     nextButton.addEventListener('click', () => updateDate(1));
 
-    dropdowns.forEach(dropdown => {
-        dropdown.addEventListener('click', function () {
-            // Find the next sibling which is the content
-            const content = this.nextElementSibling;
-            const arrow = this.querySelector('.exp-tracker-category-manager-dropdown-header span');
-
-            // Toggle visibility
-            if (content.style.display === 'none' || !content.style.display) {
-                content.style.display = 'block';
-                arrow.textContent = '▲';
-            } else {
-                content.style.display = 'none';
-                arrow.textContent = '▼';
-            }
-        });
-    });
-
     function addTransaction(transaction) {
 
         // we call post api if response is ok we run the code below
@@ -191,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
         metaDataDiv.classList.add("exp-tracker-list-metadata");
         const spanData = document.createElement("span");
         const spanTransactionCategory = document.createElement("span");
-        spanTransactionCategory.innerText = ` ${transaction.category || "income"}`;
+        spanTransactionCategory.innerText = ` ${transaction.category || "Income"}`;
         spanData.innerText = formatDateInItalian(dateInput.value, true);
 
         metaDataDiv.appendChild(spanData);

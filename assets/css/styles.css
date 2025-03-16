@@ -350,6 +350,8 @@ p {
   padding: 1rem;
   justify-content: space-between;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid transparent;
 }
 .exp-tracker-category-manager-dropdown:hover {
   background-color: #f9fafb;

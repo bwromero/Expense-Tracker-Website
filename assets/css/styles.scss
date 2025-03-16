@@ -471,6 +471,8 @@ p {
             padding: 1rem;
             justify-content: space-between;
             cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid transparent;
 
             &:hover {
                 background-color: $background-light;
