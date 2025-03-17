@@ -174,9 +174,16 @@ class ExpenseTracker {
     }
 
     formatDateInItalian(dateString, short = false) {
-        const date = new Date(dateString);
-        return short ? `${date.getDate()} ${date.toLocaleString('it', { month: 'short' })} ${date.getFullYear()}` : date.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        const date = new Date(); // Use current date & time
+        const formattedDate = new Date(dateString); // Use provided date for correct day/month
+    
+        const time = date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    
+        return short 
+            ? `${formattedDate.getDate()} ${formattedDate.toLocaleString('it', { month: 'short' })} ${formattedDate.getFullYear()} ${time}`
+            : formattedDate.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     }
+    
 
     addDays(dateString, days) {
         const date = new Date(dateString);
