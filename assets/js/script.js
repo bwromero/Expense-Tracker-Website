@@ -42,7 +42,7 @@ class ExpenseTracker {
     showCategoryInput() {
         this.categoryFormGroup.innerHTML = `
             <input type="text" id="new-category" placeholder="Enter new category">
-            <button id="save-category">Save</button>
+            <button class="primary" id="save-category">Save</button>
             <button id="cancel-category">Cancel</button>
         `;
         document.getElementById('save-category').addEventListener('click', () => this.saveCategory());
@@ -50,14 +50,7 @@ class ExpenseTracker {
     }
 
     hideCategoryInput() {
-        this.categoryFormGroup.innerHTML = `
-                    <div class="exp-tracker-modal-form-group" id="category-form-group">
-                        <label for="category">Category</label>
-                        <select name="category" id="category-select">
-                            <option value="test1">test1</option>
-                        </select>
-                        <button id="new-category-button">+ New Category</button>
-                    </div>`;
+        this.categoryFormGroup.display = "flex";
     }
 
     saveCategory() {
