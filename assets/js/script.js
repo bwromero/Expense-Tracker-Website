@@ -67,13 +67,30 @@ class ExpenseTracker {
     hideCategoryInput(event) {
         event.preventDefault();
         this.categoryFormGroup.innerHTML = '';
+
+        const addCategorySelect = this.createCategorySelect();
+        const addCategoryButton = this.createAddCategoryButton();
         
+        this.categoryFormGroup.appendChild(addCategorySelect);
+        this.categoryFormGroup.appendChild(addCategoryButton);
+    }
+
+    createCategorySelect(){
+        const addCategorySelect = document.createElement("select");
+        addCategorySelect.name = "category";
+        addCategorySelect.id = "category-select";
+        addCategorySelect.option = "option 1";
+
+        return addCategorySelect;
+    }
+
+    createAddCategoryButton() {
         const addCategoryButton = document.createElement("button");
         addCategoryButton.textContent = "+ Add Category";
         addCategoryButton.id = "add-category-button";
         addCategoryButton.addEventListener("click", (e) => this.showCategoryInput(e));
-        
-        this.categoryFormGroup.appendChild(addCategoryButton);
+
+        return addCategoryButton;
     }
 
     saveCategory() {
