@@ -33,24 +33,47 @@ class ExpenseTracker {
         this.nextButton.addEventListener('click', () => this.updateDate(1));
         this.todayButton.addEventListener('click', () => this.setTodayDate());
         this.dateInput.addEventListener('change', () => this.updateDateDisplay());
-        this.addCategoryButton.addEventListener('click', () => this.showCategoryInput());
+        this.addCategoryButton.addEventListener('click', (e) => this.showCategoryInput(e));
 
         this.setTodayDate();
         this.renderTransactions();
     }
 
-    showCategoryInput() {
-        this.categoryFormGroup.innerHTML = `
-            <input type="text" id="new-category" placeholder="Enter new category">
-            <button class="primary" id="save-category">Save</button>
-            <button id="cancel-category">Cancel</button>
-        `;
-        document.getElementById('save-category').addEventListener('click', () => this.saveCategory());
-        document.getElementById('cancel-category').addEventListener('click', () => this.hideCategoryInput());
+    showCategoryInput(event) {
+        event.preventDefault();
+        this.categoryFormGroup.innerHTML = '';
+        
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = "new-category";
+        input.placeholder = "Enter new category";
+
+        const saveButton = document.createElement("button");
+        saveButton.textContent = "Save";
+        saveButton.classList.add("primary");
+        saveButton.id = "save-category";
+        saveButton.addEventListener("click", () => this.saveCategory());
+
+        const cancelButton = document.createElement("button");
+        cancelButton.textContent = "Cancel";
+        cancelButton.id = "cancel-category";
+        cancelButton.addEventListener("click", (e) => this.hideCategoryInput(e));
+
+        this.categoryFormGroup.appendChild(input);
+        this.categoryFormGroup.appendChild(saveButton);
+        this.categoryFormGroup.appendChild(cancelButton);
     }
 
-    hideCategoryInput() {
-        this.categoryFormGroup.display = "flex";
+    hideCategoryInput(event) {
+        event.preventDefault();
+        this.categoryFormGroup.innerHTML = '';
+        
+        const addCategoryButton = document.createElement("button");
+        addCategoryButton.textContent = "+ Add Category";
+        addCategoryButton.id = "add-category-button";
+        addCategoryButton.addEventListener("click", (e) => this.showCategoryInput(e));
+        
+        this.categoryFormGroup.appendChild(addCategoryButton);
     }
 
     saveCategory() {
