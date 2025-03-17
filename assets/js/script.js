@@ -1,3 +1,6 @@
+import { modalConfigs } from "./modals/modals.js";
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const app = new ExpenseTracker();
     app.init();
