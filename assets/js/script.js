@@ -100,17 +100,17 @@ class ExpenseTracker {
         return `
             <li>
                 <div>
-                    <div>${transaction.description}</div>
-                    <div>
+                    <div class='exp-tracker-list-description'>${transaction.description}</div>
+                    <div class='exp-tracker-list-metadata'>
                         <span>${this.formatDateInItalian(this.dateInput.value, true)}</span>
                         <span>${transaction.category || 'Income'}</span>
                     </div>
                 </div>
-                <div>
-                    <div class='${transaction.category ? 'expense' : 'income'}'>
+                <div class='exp-tracker-list-right-section'>
+                    <div class='exp-tracker-list-amount ${transaction.category ? 'expense' : 'income'}'>
                         ${transaction.category ? '-' : '+'} $${transaction.amount}
                     </div>
-                    <div>
+                    <div class='exp-tracker-list-buttons'>
                         <button onclick='app.editTransaction("${transaction.description}")'>Edit</button>
                         <button onclick='app.deleteTransaction("${transaction.description}")'>Delete</button>
                     </div>
