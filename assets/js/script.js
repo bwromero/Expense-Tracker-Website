@@ -26,6 +26,8 @@ class ExpenseTracker {
     }
 
     init() {
+        this.initExpenseCategoryComponents();
+
         this.addIncomeButton.addEventListener('click', () => this.openModal(this.addIncomeModal));
         this.addExpenseButton.addEventListener('click', () => this.openModal(this.addExpenseModal));
         this.modalButtons.forEach(button => button.addEventListener('click', (e) => this.handleModalActions(e, button)));
@@ -33,7 +35,6 @@ class ExpenseTracker {
         this.nextButton.addEventListener('click', () => this.updateDate(1));
         this.todayButton.addEventListener('click', () => this.setTodayDate());
         this.dateInput.addEventListener('change', () => this.updateDateDisplay());
-        this.addCategoryButton.addEventListener('click', (e) => this.showCategoryInput(e));
 
         this.setTodayDate();
         this.renderTransactions();
@@ -68,11 +69,21 @@ class ExpenseTracker {
         event.preventDefault();
         this.categoryFormGroup.innerHTML = '';
 
-        const addCategorySelect = this.createCategorySelect();
-        const addCategoryButton = this.createAddCategoryButton();
-        
-        this.categoryFormGroup.appendChild(addCategorySelect);
-        this.categoryFormGroup.appendChild(addCategoryButton);
+        this.initExpenseCategoryComponents();
+    }
+
+    initExpenseCategoryComponents() {
+        this.categoryFormGroup.appendChild(this.createCategoryLabel());
+        this.categoryFormGroup.appendChild(this.createCategorySelect());
+        this.categoryFormGroup.appendChild(this.createAddCategoryButton());
+    }
+
+    createCategoryLabel(){
+        const categoryLabel = document.createElement("label");
+        categoryLabel.for = "category";
+        categoryLabel.textContent = "Category";
+
+        return categoryLabel;
     }
 
     createCategorySelect(){
@@ -80,6 +91,11 @@ class ExpenseTracker {
         addCategorySelect.name = "category";
         addCategorySelect.id = "category-select";
         addCategorySelect.option = "option 1";
+
+        const option = document.createElement("option");
+        option.value = "option 1"; 
+        option.textContent = "option 1"; 
+        addCategorySelect.appendChild(option); 
 
         return addCategorySelect;
     }
