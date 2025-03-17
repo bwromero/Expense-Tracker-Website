@@ -50,7 +50,14 @@ class ExpenseTracker {
     }
 
     hideCategoryInput() {
-        this.categoryFormGroup.innerHTML = '';
+        this.categoryFormGroup.innerHTML = `
+                    <div class="exp-tracker-modal-form-group" id="category-form-group">
+                        <label for="category">Category</label>
+                        <select name="category" id="category-select">
+                            <option value="test1">test1</option>
+                        </select>
+                        <button id="new-category-button">+ New Category</button>
+                    </div>`;
     }
 
     saveCategory() {
