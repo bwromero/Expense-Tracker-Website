@@ -1,243 +1,163 @@
-// Global variables for date handling
-const dateInput = document.querySelector('#day-selector-date-input');
-const dateDisplay = document.querySelector('#day-selector-date-display');
-
 document.addEventListener('DOMContentLoaded', function () {
-    const prevButton = document.querySelector('.exp-tracker-day-selector-nav-button:first-of-type');
-    const nextButton = document.querySelector('.exp-tracker-day-selector-nav-button:last-of-type');
-    const todayButton = document.querySelector('#day-selector-today-button');
-    const addIncomeButton = document.getElementById('add-income-button');
-    const addExpenseButton = document.getElementById('add-expense-button');
-    const addIncomeModal = document.getElementById('add-income-modal');
-    const addExpenseModal = document.getElementById('add-expense-modal');
-    const modalButtons = document.querySelectorAll(".exp-tracker-modal-actions button");
-    const addIncomeModalParent = addIncomeModal.parentElement;
-    const addIncomeForm = addIncomeModal.querySelector("form");
-    const addExpenseForm = addExpenseModal.querySelector("form");
-    const categoryFormGroup = document.getElementById("category-form-group");
-    const addCategoryButton = categoryFormGroup.children[2];
-    const categorySelect = categoryFormGroup.children[1];
-    const addButtons = [addIncomeButton, addExpenseButton];
-    const transactionList = document.querySelector(".exp-tracker-list-items");
-    const emptyListParagraph = document.querySelector(".exp-tracker-list-empty");
-
-    // Init category input
-    const categoryInput = document.createElement("input");
-    categoryInput.type = "text";
-    categoryInput.placeholder = "Enter new category name";
-
-    // Create Save category button
-    const saveCategoryButton = document.createElement("button");
-    saveCategoryButton.textContent = "Save";
-    saveCategoryButton.classList.add("primary");
-
-    // Create Cancel category button
-    const cancelCategoryBtn = document.createElement("button");
-    cancelCategoryBtn.textContent = "Cancel";
-
-    addButtons.forEach(button => {
-        button.addEventListener("click", (event) => {
-            event.preventDefault();
-            addIncomeModalParent.style.display = 'flex';
-
-            if (button.innerText === 'Add Income') {
-                addIncomeModal.style.display = 'flex';
-    
-            }
-
-            if (button.innerText === 'Add Expense') {
-                addExpenseModal.style.display = 'flex';
-            }
-        })
-    })
-
-    modalButtons.forEach((button) => {
-        button.addEventListener("click", (event) => {
-            event.preventDefault();
-
-            let transaction = {
-                description: "",
-                amount: "",
-                category: ""
-            };
-
-            if (button.textContent.trim() === 'Add income') {
-                // we add an item to the container and to the transactions by category 
-
-                const formData = new FormData(addIncomeForm); // Capture form data
-                transaction.description = formData.get("description");
-                transaction.amount = formData.get("amount");
-
-                addTransaction(transaction);
-                addIncomeForm.reset();
-                transaction.description = "";
-                transaction.amount = "";
-                addIncomeModal.style.display = "none";
-
-            }
-
-            if (button.textContent.trim() === 'Add expense') {
-                // we add an item to the container and to the transactions by category 
-                const formData = new FormData(addExpenseForm); // Capture form data
-                transaction.description = formData.get("description");
-                transaction.amount = formData.get("amount");
-                transaction.category = formData.get("category");
-
-                addTransaction(transaction);
-                addExpenseForm.reset();
-                transaction.description = "";
-                transaction.amount = "";
-                transaction.category = "";
-                addExpenseModal.style.display = "none";
-            }
-
-            if (button.textContent.trim() === 'Cancel') {
-                addIncomeModalParent.style.display = 'none';
-                addIncomeModal.style.display = 'none';
-                addExpenseModal.style.display = 'none';
-                toggleCategoryElements();
-                addIncomeForm.reset();
-                addExpenseForm.reset();
-
-            }
-        })
-    })
-
-    addCategoryButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        categorySelect.style.display = 'none';
-        addCategoryButton.style.display = 'none';
-        categoryFormGroup.appendChild(categoryInput);
-        categoryFormGroup.appendChild(saveCategoryButton);
-        categoryFormGroup.appendChild(cancelCategoryBtn);
-    })
-
-    // Prevent "Enter" from creating more inputs
-    categoryInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            saveCategoryButton.click(); // Simulate clicking the save button
-        }
-    });
-
-    cancelCategoryBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        toggleCategoryElements();
-    })
-
-    toggleCategoryElements = () => {
-        categorySelect.style.display = 'block';
-        addCategoryButton.style.display = 'block';
-        categoryInput.remove();
-        saveCategoryButton.remove();
-        cancelCategoryBtn.remove();
-    }
-
-    dateInput.setAttribute('value', new Date().toISOString().split('T')[0]);
-    dateDisplay.textContent = formatDateInItalian(dateInput.value);
-
-    // Date input change handler
-    dateInput.addEventListener('change', function () {
-        dateDisplay.textContent = formatDateInItalian(this.value);
-    });
-
-    // Today button click handler
-    todayButton.addEventListener('click', function () {
-        const date = new Date();
-        const formattedDate = date.toISOString().split('T')[0];
-
-        dateDisplay.textContent = formatDateInItalian(date);
-        dateInput.value = formattedDate;
-    });
-
-    // Previous button click handler
-    prevButton.addEventListener('click', () => updateDate(-1));
-
-    // Next button click handler
-    nextButton.addEventListener('click', () => updateDate(1));
-
-    function addTransaction(transaction) {
-
-        // we call post api if response is ok we run the code below
-
-        addIncomeModalParent.style.display = "none";
-        emptyListParagraph.style.display = "none";
-        
-        const li = document.createElement("li");
-
-        const detailsDiv = document.createElement("div");
-        const detailsTextDiv = document.createElement("div");
-        detailsTextDiv.innerText = transaction.description;
-        detailsTextDiv.classList.add("exp-tracker-list-description");
-        const metaDataDiv = document.createElement("div");
-        metaDataDiv.classList.add("exp-tracker-list-metadata");
-        const spanData = document.createElement("span");
-        const spanTransactionCategory = document.createElement("span");
-        spanTransactionCategory.innerText = ` ${transaction.category || "Income"}`;
-        spanData.innerText = formatDateInItalian(dateInput.value, true);
-
-        metaDataDiv.appendChild(spanData);
-        metaDataDiv.appendChild(spanTransactionCategory);
-
-        detailsDiv.appendChild(detailsTextDiv);
-        detailsDiv.appendChild(metaDataDiv);
-
-        const rightSectionDiv = document.createElement("div");
-        rightSectionDiv.classList.add("exp-tracker-list-right-section");
-        const amountTextDiv = document.createElement("div");
-        const actionButtonsDiv = document.createElement("div");
-        actionButtonsDiv.classList.add("exp-tracker-list-buttons")
-        const editButton = document.createElement("button");
-        const deleteButton = document.createElement("button");
-        editButton.textContent = "Edit";
-        deleteButton.textContent = "Delete";
-        amountTextDiv.innerText = `${transaction.category? "-" : "+"} $${transaction.amount}` ;
-        amountTextDiv.classList.add("exp-tracker-list-amount", transaction.category? "expense":"income");
-
-
-
-        rightSectionDiv.appendChild(amountTextDiv);
-        actionButtonsDiv.appendChild(editButton);
-        actionButtonsDiv.appendChild(deleteButton);
-        rightSectionDiv.appendChild(actionButtonsDiv);
-
-        // Append all elements to list item
-        li.appendChild(detailsDiv);
-        li.appendChild(rightSectionDiv);
-
-        // Append list item to the unordered list
-        transactionList.appendChild(li);
-    }
+    const app = new ExpenseTracker();
+    app.init();
 });
 
-function formatDateInItalian(dateString, short) {
-    const date = new Date(dateString);
-    const weekdays = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
-    const months = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
-
-    const dayOfWeek = weekdays[date.getDay()];
-    const dayOfMonth = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-
-    const formatedData = short?  `${dayOfMonth} ${month.slice(0,3)} ${year}`:  `${dayOfWeek} ${dayOfMonth} ${month} ${year}`
-
-    return formatedData;
-}
-
-function addDays(dateString, days) {
-    const date = new Date(dateString);
-    date.setDate(date.getDate() + days);
-    return date.toISOString().split('T')[0];
-}
-
-// Function to update date by specified number of days
-function updateDate(days) {
-    if (!dateInput || !dateDisplay) {
-        console.error('Date elements not found');
-        return;
+class ExpenseTracker {
+    constructor() {
+        this.transactions = this.loadTransactions();
+        this.dateInput = document.querySelector('#day-selector-date-input');
+        this.dateDisplay = document.querySelector('#day-selector-date-display');
+        this.transactionList = document.querySelector('.exp-tracker-list-items');
+        this.emptyListParagraph = document.querySelector('.exp-tracker-list-empty');
+        this.addIncomeButton = document.getElementById('add-income-button');
+        this.addExpenseButton = document.getElementById('add-expense-button');
+        this.addIncomeModal = document.getElementById('add-income-modal');
+        this.addExpenseModal = document.getElementById('add-expense-modal');
+        this.addIncomeModalParent = this.addIncomeModal.parentElement;
+        this.addIncomeForm = this.addIncomeModal.querySelector('form');
+        this.addExpenseForm = this.addExpenseModal.querySelector('form');
+        this.modalButtons = document.querySelectorAll('.exp-tracker-modal-actions button');
+        this.prevButton = document.querySelector('.exp-tracker-day-selector-nav-button:first-of-type');
+        this.nextButton = document.querySelector('.exp-tracker-day-selector-nav-button:last-of-type');
+        this.todayButton = document.querySelector('#day-selector-today-button');
+        this.addCategoryButton = document.getElementById('new-category-button');
+        this.categoryFormGroup = document.getElementById('category-form-group');
     }
-    const formattedDate = addDays(dateInput.value, days);
-    dateDisplay.textContent = formatDateInItalian(formattedDate);
-    dateInput.value = formattedDate;
+
+    init() {
+        this.addIncomeButton.addEventListener('click', () => this.openModal(this.addIncomeModal));
+        this.addExpenseButton.addEventListener('click', () => this.openModal(this.addExpenseModal));
+        this.modalButtons.forEach(button => button.addEventListener('click', (e) => this.handleModalActions(e, button)));
+        this.prevButton.addEventListener('click', () => this.updateDate(-1));
+        this.nextButton.addEventListener('click', () => this.updateDate(1));
+        this.todayButton.addEventListener('click', () => this.setTodayDate());
+        this.dateInput.addEventListener('change', () => this.updateDateDisplay());
+        this.addCategoryButton.addEventListener('click', () => this.showCategoryInput());
+
+        this.setTodayDate();
+        this.renderTransactions();
+    }
+
+    showCategoryInput() {
+        this.categoryFormGroup.innerHTML = `
+            <input type="text" id="new-category" placeholder="Enter new category">
+            <button id="save-category">Save</button>
+            <button id="cancel-category">Cancel</button>
+        `;
+        document.getElementById('save-category').addEventListener('click', () => this.saveCategory());
+        document.getElementById('cancel-category').addEventListener('click', () => this.hideCategoryInput());
+    }
+
+    hideCategoryInput() {
+        this.categoryFormGroup.innerHTML = '';
+    }
+
+    saveCategory() {
+        const newCategory = document.getElementById('new-category').value.trim();
+        if (newCategory) {
+            console.log(`New category added: ${newCategory}`);
+        }
+        this.hideCategoryInput();
+    }
+
+    openModal(modal) {
+        this.addIncomeModalParent.style.display = 'flex';
+        modal.style.display = 'flex';
+    }
+
+    closeModal() {
+        this.addIncomeModalParent.style.display = 'none';
+        this.addIncomeModal.style.display = 'none';
+        this.addExpenseModal.style.display = 'none';
+    }
+
+    handleModalActions(event, button) {
+        event.preventDefault();
+        const transaction = this.getFormData(button.textContent.includes('income') ? this.addIncomeForm : this.addExpenseForm);
+        this.addTransaction(transaction);
+        this.closeModal();
+    }
+
+    getFormData(form) {
+        return Object.fromEntries(new FormData(form).entries());
+    }
+
+    addTransaction(transaction) {
+        this.transactions.push(transaction);
+        this.saveTransactions();
+        this.renderTransactions();
+    }
+
+    renderTransactions() {
+        this.transactionList.innerHTML = this.transactions
+            .map(transaction => this.createTransactionHTML(transaction))
+            .join('');
+        this.emptyListParagraph.style.display = this.transactions.length ? 'none' : 'block';
+    }
+
+    createTransactionHTML(transaction) {
+        return `
+            <li>
+                <div>
+                    <div>${transaction.description}</div>
+                    <div>
+                        <span>${this.formatDateInItalian(this.dateInput.value, true)}</span>
+                        <span>${transaction.category || 'Income'}</span>
+                    </div>
+                </div>
+                <div>
+                    <div class='${transaction.category ? 'expense' : 'income'}'>
+                        ${transaction.category ? '-' : '+'} $${transaction.amount}
+                    </div>
+                    <div>
+                        <button onclick='app.editTransaction("${transaction.description}")'>Edit</button>
+                        <button onclick='app.deleteTransaction("${transaction.description}")'>Delete</button>
+                    </div>
+                </div>
+            </li>`;
+    }
+
+    editTransaction(description) {
+        console.log(`Editing transaction: ${description}`);
+    }
+
+    deleteTransaction(description) {
+        this.transactions = this.transactions.filter(transaction => transaction.description !== description);
+        this.saveTransactions();
+        this.renderTransactions();
+    }
+
+    saveTransactions() {
+        localStorage.setItem('transactions', JSON.stringify(this.transactions));
+    }
+
+    loadTransactions() {
+        return JSON.parse(localStorage.getItem('transactions')) || [];
+    }
+
+    setTodayDate() {
+        this.dateInput.value = new Date().toISOString().split('T')[0];
+        this.updateDateDisplay();
+    }
+
+    updateDate(days) {
+        this.dateInput.value = this.addDays(this.dateInput.value, days);
+        this.updateDateDisplay();
+    }
+
+    updateDateDisplay() {
+        this.dateDisplay.textContent = this.formatDateInItalian(this.dateInput.value);
+    }
+
+    formatDateInItalian(dateString, short = false) {
+        const date = new Date(dateString);
+        return short ? `${date.getDate()} ${date.toLocaleString('it', { month: 'short' })} ${date.getFullYear()}` : date.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    addDays(dateString, days) {
+        const date = new Date(dateString);
+        date.setDate(date.getDate() + days);
+        return date.toISOString().split('T')[0];
+    }
 }
