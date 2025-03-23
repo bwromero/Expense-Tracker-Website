@@ -15,25 +15,149 @@ class ExpenseTracker {
         this.emptyListParagraph = document.querySelector('.exp-tracker-list-empty');
         this.addIncomeButton = document.getElementById('add-income-button');
         this.addExpenseButton = document.getElementById('add-expense-button');
-        this.addIncomeModal = document.getElementById('add-income-modal');
-        this.addExpenseModal = document.getElementById('add-expense-modal');
-        this.addIncomeModalParent = this.addIncomeModal.parentElement;
-        this.addIncomeForm = this.addIncomeModal.querySelector('form');
-        this.addExpenseForm = this.addExpenseModal.querySelector('form');
-        this.modalButtons = document.querySelectorAll('.exp-tracker-modal-actions button');
+        this.modalOverlay = document.querySelector('.exp-tracker-modal-overlay');
         this.prevButton = document.querySelector('.exp-tracker-day-selector-nav-button:first-of-type');
         this.nextButton = document.querySelector('.exp-tracker-day-selector-nav-button:last-of-type');
         this.todayButton = document.querySelector('#day-selector-today-button');
-        this.addCategoryButton = document.getElementById('new-category-button');
-        this.categoryFormGroup = document.getElementById('category-form-group');
+        
+        // Create modals dynamically
+        this.createModals();
+    }
+
+    createModals() {
+        // Clear existing modals
+        this.modalOverlay.innerHTML = '';
+        
+        // Create each modal from config
+        modalConfigs.forEach(config => {
+            const modalContent = document.createElement('div');
+            modalContent.className = 'exp-tracker-modal-content';
+            modalContent.id = config.id;
+            
+            // Add title
+            const title = document.createElement('h2');
+            title.textContent = config.title;
+            modalContent.appendChild(title);
+            
+            // Create form
+            const form = document.createElement('form');
+            form.className = 'exp-tracker-modal-form';
+            form.action = 'submit';
+            
+            // Add form fields
+            config.fields.forEach(field => {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'exp-tracker-modal-form-group';
+                
+                const label = document.createElement('label');
+                label.setAttribute('for', field.name);
+                label.textContent = field.label;
+                formGroup.appendChild(label);
+
+                if (field.isCustom && field.type === 'select') {
+                    // Create select element
+                    const select = document.createElement('select');
+                    select.name = field.name;
+                    select.id = `${field.name}-select`;
+
+                    // Add options
+                    field.options.forEach(optionText => {
+                        const option = document.createElement('option');
+                        option.value = optionText;
+                        option.textContent = optionText;
+                        select.appendChild(option);
+                    });
+                    formGroup.appendChild(select);
+
+                    // Add "Add Category" button
+                    const addButton = document.createElement('button');
+                    addButton.textContent = '+ Add Category';
+                    addButton.type = 'button'; // Prevent form submission
+                    addButton.addEventListener('click', (e) => this.showCategoryInput(e, select));
+                    formGroup.appendChild(addButton);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = field.type;
+                    input.name = field.name;
+                    formGroup.appendChild(input);
+                }
+                
+                form.appendChild(formGroup);
+            });
+            
+            // Add action buttons
+            const actions = document.createElement('div');
+            actions.className = 'exp-tracker-modal-actions';
+            
+            const submitButton = document.createElement('button');
+            submitButton.textContent = config.submitText;
+            
+            const cancelButton = document.createElement('button');
+            cancelButton.textContent = 'Cancel';
+            
+            actions.appendChild(submitButton);
+            actions.appendChild(cancelButton);
+            form.appendChild(actions);
+            
+            modalContent.appendChild(form);
+            this.modalOverlay.appendChild(modalContent);
+            
+            // Store references to the modal elements
+            this[`${config.id}`] = modalContent;
+            this[`${config.id}Form`] = form;
+        });
+    }
+
+    showCategoryInput(event, select) {
+        event.preventDefault();
+        const formGroup = event.target.closest('.exp-tracker-modal-form-group');
+        const oldContent = formGroup.innerHTML;
+        
+        formGroup.innerHTML = '';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = 'new-category';
+        input.placeholder = 'Enter new category';
+        
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+        saveButton.classList.add('primary');
+        saveButton.type = 'button';
+        saveButton.addEventListener('click', () => this.saveCategory(input.value, select, formGroup, oldContent));
+        
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = 'Cancel';
+        cancelButton.type = 'button';
+        cancelButton.addEventListener('click', () => {
+            formGroup.innerHTML = oldContent;
+        });
+        
+        formGroup.appendChild(input);
+        formGroup.appendChild(saveButton);
+        formGroup.appendChild(cancelButton);
+    }
+
+    saveCategory(category, select, formGroup, oldContent) {
+        if (category.trim()) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            select.appendChild(option);
+            select.value = category;
+        }
+        formGroup.innerHTML = oldContent;
     }
 
     init() {
-        this.initExpenseCategoryComponents();
-
-        this.addIncomeButton.addEventListener('click', () => this.openModal(this.addIncomeModal));
-        this.addExpenseButton.addEventListener('click', () => this.openModal(this.addExpenseModal));
-        this.modalButtons.forEach(button => button.addEventListener('click', (e) => this.handleModalActions(e, button)));
+        this.addIncomeButton.addEventListener('click', () => this.openModal('add-income-modal'));
+        this.addExpenseButton.addEventListener('click', () => this.openModal('add-expense-modal'));
+        
+        // Add event listeners to all modal buttons
+        document.querySelectorAll('.exp-tracker-modal-actions button').forEach(button => {
+            button.addEventListener('click', (e) => this.handleModalActions(e, button));
+        });
+        
         this.prevButton.addEventListener('click', () => this.updateDate(-1));
         this.nextButton.addEventListener('click', () => this.updateDate(1));
         this.todayButton.addEventListener('click', () => this.setTodayDate());
@@ -43,97 +167,27 @@ class ExpenseTracker {
         this.renderTransactions();
     }
 
-    showCategoryInput(event) {
-        event.preventDefault();
-        this.categoryFormGroup.innerHTML = '';
-        
-        const input = document.createElement("input");
-        input.type = "text";
-        input.id = "new-category";
-        input.placeholder = "Enter new category";
-
-        const saveButton = document.createElement("button");
-        saveButton.textContent = "Save";
-        saveButton.classList.add("primary");
-        saveButton.id = "save-category";
-        saveButton.addEventListener("click", () => this.saveCategory());
-
-        const cancelButton = document.createElement("button");
-        cancelButton.textContent = "Cancel";
-        cancelButton.id = "cancel-category";
-        cancelButton.addEventListener("click", (e) => this.hideCategoryInput(e));
-
-        this.categoryFormGroup.appendChild(input);
-        this.categoryFormGroup.appendChild(saveButton);
-        this.categoryFormGroup.appendChild(cancelButton);
-    }
-
-    hideCategoryInput(event) {
-        event.preventDefault();
-        this.categoryFormGroup.innerHTML = '';
-
-        this.initExpenseCategoryComponents();
-    }
-
-    initExpenseCategoryComponents() {
-        this.categoryFormGroup.appendChild(this.createCategoryLabel());
-        this.categoryFormGroup.appendChild(this.createCategorySelect());
-        this.categoryFormGroup.appendChild(this.createAddCategoryButton());
-    }
-
-    createCategoryLabel(){
-        const categoryLabel = document.createElement("label");
-        categoryLabel.for = "category";
-        categoryLabel.textContent = "Category";
-
-        return categoryLabel;
-    }
-
-    createCategorySelect(){
-        const addCategorySelect = document.createElement("select");
-        addCategorySelect.name = "category";
-        addCategorySelect.id = "category-select";
-        addCategorySelect.option = "option 1";
-
-        const option = document.createElement("option");
-        option.value = "option 1"; 
-        option.textContent = "option 1"; 
-        addCategorySelect.appendChild(option); 
-
-        return addCategorySelect;
-    }
-
-    createAddCategoryButton() {
-        const addCategoryButton = document.createElement("button");
-        addCategoryButton.textContent = "+ Add Category";
-        addCategoryButton.id = "add-category-button";
-        addCategoryButton.addEventListener("click", (e) => this.showCategoryInput(e));
-
-        return addCategoryButton;
-    }
-
-    saveCategory() {
-        const newCategory = document.getElementById('new-category').value.trim();
-        if (newCategory) {
-            console.log(`New category added: ${newCategory}`);
-        }
-        this.hideCategoryInput();
-    }
-
-    openModal(modal) {
-        this.addIncomeModalParent.style.display = 'flex';
-        modal.style.display = 'flex';
+    openModal(modalId) {
+        this.modalOverlay.style.display = 'flex';
+        this[modalId].style.display = 'flex';
     }
 
     closeModal() {
-        this.addIncomeModalParent.style.display = 'none';
-        this.addIncomeModal.style.display = 'none';
-        this.addExpenseModal.style.display = 'none';
+        this.modalOverlay.style.display = 'none';
+        document.querySelectorAll('.exp-tracker-modal-content').forEach(modal => {
+            modal.style.display = 'none';
+        });
     }
 
     handleModalActions(event, button) {
         event.preventDefault();
-        const transaction = this.getFormData(button.textContent.includes('income') ? this.addIncomeForm : this.addExpenseForm);
+        if (button.textContent === 'Cancel') {
+            this.closeModal();
+            return;
+        }
+        
+        const form = button.closest('form');
+        const transaction = this.getFormData(form);
         this.addTransaction(transaction);
         this.closeModal();
     }

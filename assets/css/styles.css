@@ -184,6 +184,7 @@ p {
   border-radius: 0.3rem;
   padding: 0.25rem 0.5rem;
   transition: background-color 0.2s ease;
+  width: -moz-fit-content;
   width: fit-content;
   align-self: center;
 }
@@ -371,6 +372,4 @@ p {
 }
 .exp-tracker-charts h2 {
   margin-bottom: 1.5rem;
-}
-
-/*# sourceMappingURL=styles.css.map */
+}/*# sourceMappingURL=styles.css.map */
