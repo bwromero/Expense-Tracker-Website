@@ -267,12 +267,16 @@ class ExpenseTracker {
         form.querySelector('[name="description"]').value = transaction.description;
         form.querySelector('[name="amount"]').value = transaction.amount;
         
-        // Handle category field if it exists
-        const categorySelect = form.querySelector('[name="category"]');
-        if (categorySelect && transaction.category) {
+        // Handle category field and its container
+        const categoryFormGroup = form.querySelector('[name="category"]').closest('.exp-tracker-modal-form-group');
+        if (transaction.category) {
+            // This is an expense transaction
+            categoryFormGroup.style.display = 'flex';
+            const categorySelect = form.querySelector('[name="category"]');
             categorySelect.value = transaction.category;
-        } else if (categorySelect) {
-            categorySelect.style.display = transaction.category ? 'block' : 'none';
+        } else {
+            // This is an income transaction
+            categoryFormGroup.style.display = 'none';
         }
     }
 
