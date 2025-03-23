@@ -1,5 +1,5 @@
 import { modalConfigs } from "./modals/modals.js";
-import { Modal } from "./modals/Modal.js";
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const app = new ExpenseTracker();
@@ -20,43 +20,143 @@ class ExpenseTracker {
         this.nextButton = document.querySelector('.exp-tracker-day-selector-nav-button:last-of-type');
         this.todayButton = document.querySelector('#day-selector-today-button');
         
-        // Initialize modals
-        this.initializeModals();
-        
-        // Bind methods that need 'this' context
-        this.handleTransactionAction = this.handleTransactionAction.bind(this);
+        // Create modals dynamically
+        this.createModals();
     }
 
-    initializeModals() {
+    createModals() {
         // Clear existing modals
         this.modalOverlay.innerHTML = '';
         
-        // Create modals with their respective handlers
+        // Create each modal from config
         modalConfigs.forEach(config => {
-            const modal = new Modal(config, (formData) => {
-                if (formData.editIndex !== undefined) {
-                    // Update existing transaction
-                    const index = parseInt(formData.editIndex);
-                    this.transactions[index] = formData;
+            const modalContent = document.createElement('div');
+            modalContent.className = 'exp-tracker-modal-content';
+            modalContent.id = config.id;
+            
+            // Add title
+            const title = document.createElement('h2');
+            title.textContent = config.title;
+            modalContent.appendChild(title);
+            
+            // Create form
+            const form = document.createElement('form');
+            form.className = 'exp-tracker-modal-form';
+            form.action = 'submit';
+            
+            // Add form fields
+            config.fields.forEach(field => {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'exp-tracker-modal-form-group';
+                
+                const label = document.createElement('label');
+                label.setAttribute('for', field.name);
+                label.textContent = field.label;
+                formGroup.appendChild(label);
+
+                if (field.isCustom && field.type === 'select') {
+                    // Create select element
+                    const select = document.createElement('select');
+                    select.name = field.name;
+                    select.id = `${field.name}-select`;
+
+                    // Add options
+                    field.options.forEach(optionText => {
+                        const option = document.createElement('option');
+                        option.value = optionText;
+                        option.textContent = optionText;
+                        select.appendChild(option);
+                    });
+                    formGroup.appendChild(select);
+
+                    // Add "Add Category" button
+                    const addButton = document.createElement('button');
+                    addButton.textContent = '+ Add Category';
+                    addButton.type = 'button'; // Prevent form submission
+                    addButton.addEventListener('click', (e) => this.showCategoryInput(e, select));
+                    formGroup.appendChild(addButton);
                 } else {
-                    // Add new transaction
-                    this.transactions.push(formData);
+                    const input = document.createElement('input');
+                    input.type = field.type;
+                    input.name = field.name;
+                    formGroup.appendChild(input);
                 }
-                this.saveTransactions();
-                this.renderTransactions();
+                
+                form.appendChild(formGroup);
             });
             
-            // Store modal reference
-            this[`${config.id}Modal`] = modal;
+            // Add action buttons
+            const actions = document.createElement('div');
+            actions.className = 'exp-tracker-modal-actions';
+            
+            const submitButton = document.createElement('button');
+            submitButton.textContent = config.submitText;
+            
+            const cancelButton = document.createElement('button');
+            cancelButton.textContent = 'Cancel';
+            
+            actions.appendChild(submitButton);
+            actions.appendChild(cancelButton);
+            form.appendChild(actions);
+            
+            modalContent.appendChild(form);
+            this.modalOverlay.appendChild(modalContent);
+            
+            // Store references to the modal elements
+            this[`${config.id}`] = modalContent;
+            this[`${config.id}Form`] = form;
         });
+    }
+
+    showCategoryInput(event, select) {
+        event.preventDefault();
+        const formGroup = event.target.closest('.exp-tracker-modal-form-group');
+        const oldContent = formGroup.innerHTML;
+        
+        formGroup.innerHTML = '';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = 'new-category';
+        input.placeholder = 'Enter new category';
+        
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+        saveButton.classList.add('primary');
+        saveButton.type = 'button';
+        saveButton.addEventListener('click', () => this.saveCategory(input.value, select, formGroup, oldContent));
+        
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = 'Cancel';
+        cancelButton.type = 'button';
+        cancelButton.addEventListener('click', () => {
+            formGroup.innerHTML = oldContent;
+        });
+        
+        formGroup.appendChild(input);
+        formGroup.appendChild(saveButton);
+        formGroup.appendChild(cancelButton);
+    }
+
+    saveCategory(category, select, formGroup, oldContent) {
+        if (category.trim()) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            select.appendChild(option);
+            select.value = category;
+        }
+        formGroup.innerHTML = oldContent;
     }
 
     init() {
         this.addIncomeButton.addEventListener('click', () => this.openModal('add-income-modal'));
         this.addExpenseButton.addEventListener('click', () => this.openModal('add-expense-modal'));
         
-        // Add event delegation for transaction actions
-        this.transactionList.addEventListener('click', this.handleTransactionAction);
+        // Add event listeners to all modal buttons
+        document.querySelectorAll('.exp-tracker-modal-actions button').forEach(button => {
+            button.addEventListener('click', (e) => this.handleModalActions(e, button));
+        });
         
         this.prevButton.addEventListener('click', () => this.updateDate(-1));
         this.nextButton.addEventListener('click', () => this.updateDate(1));
@@ -68,22 +168,71 @@ class ExpenseTracker {
     }
 
     openModal(modalId) {
-        this[`${modalId}Modal`].open();
+        this.modalOverlay.style.display = 'flex';
+        this[modalId].style.display = 'flex';
+    }
+
+    closeModal() {
+        this.modalOverlay.style.display = 'none';
+        document.querySelectorAll('.exp-tracker-modal-content').forEach(modal => {
+            modal.style.display = 'none';
+        });
+    }
+
+    handleModalActions(event, button) {
+        event.preventDefault();
+        if (button.textContent === 'Cancel') {
+            this.closeModal();
+            return;
+        }
+        
+        const form = button.closest('form');
+        const transaction = this.getFormData(form);
+        this.addTransaction(transaction);
+        this.closeModal();
+    }
+
+    getFormData(form) {
+        return Object.fromEntries(new FormData(form).entries());
+    }
+
+    addTransaction(transaction) {
+        this.transactions.push(transaction);
+        this.saveTransactions();
+        this.renderTransactions();
+    }
+
+    renderTransactions() {
+        this.transactionList.innerHTML = this.transactions
+            .map(transaction => this.createTransactionHTML(transaction))
+            .join('');
+        this.emptyListParagraph.style.display = this.transactions.length ? 'none' : 'block';
+    }
+
+    createTransactionHTML(transaction) {
+        return `
+            <li>
+                <div>
+                    <div class='exp-tracker-list-description'>${transaction.description}</div>
+                    <div class='exp-tracker-list-metadata'>
+                        <span>${this.formatDateInItalian(this.dateInput.value, true)}</span>
+                        <span>${transaction.category || 'Income'}</span>
+                    </div>
+                </div>
+                <div class='exp-tracker-list-right-section'>
+                    <div class='exp-tracker-list-amount ${transaction.category ? 'expense' : 'income'}'>
+                        ${transaction.category ? '-' : '+'} $${transaction.amount}
+                    </div>
+                    <div class='exp-tracker-list-buttons'>
+                        <button onclick='app.editTransaction("${transaction.description}")'>Edit</button>
+                        <button onclick='app.deleteTransaction("${transaction.description}")'>Delete</button>
+                    </div>
+                </div>
+            </li>`;
     }
 
     editTransaction(description) {
-        // Find the transaction to edit
-        const index = this.transactions.findIndex(t => t.description === description);
-        if (index === -1) return;
-        
-        const transaction = this.transactions[index];
-        const modalId = 'edit-transaction-modal';
-        
-        // Get the modal and set up edit mode
-        const modal = this[`${modalId}Modal`];
-        modal.setFormData(transaction);
-        modal.setEditMode(index);
-        modal.open();
+        console.log(`Editing transaction: ${description}`);
     }
 
     deleteTransaction(description) {
@@ -130,50 +279,5 @@ class ExpenseTracker {
         const date = new Date(dateString);
         date.setDate(date.getDate() + days);
         return date.toISOString().split('T')[0];
-    }
-
-    handleTransactionAction(event) {
-        const button = event.target.closest('button');
-        if (!button) return;
-
-        const li = button.closest('li');
-        if (!li) return;
-
-        const description = li.dataset.description;
-        
-        if (button.classList.contains('edit-btn')) {
-            this.editTransaction(description);
-        } else if (button.classList.contains('delete-btn')) {
-            this.deleteTransaction(description);
-        }
-    }
-
-    renderTransactions() {
-        this.transactionList.innerHTML = this.transactions
-            .map(transaction => this.createTransactionHTML(transaction))
-            .join('');
-        this.emptyListParagraph.style.display = this.transactions.length ? 'none' : 'block';
-    }
-
-    createTransactionHTML(transaction) {
-        return `
-            <li data-description="${transaction.description}">
-                <div>
-                    <div class='exp-tracker-list-description'>${transaction.description}</div>
-                    <div class='exp-tracker-list-metadata'>
-                        <span>${this.formatDateInItalian(this.dateInput.value, true)}</span>
-                        <span>${transaction.category || 'Income'}</span>
-                    </div>
-                </div>
-                <div class='exp-tracker-list-right-section'>
-                    <div class='exp-tracker-list-amount ${transaction.category ? 'expense' : 'income'}'>
-                        ${transaction.category ? '-' : '+'} $${transaction.amount}
-                    </div>
-                    <div class='exp-tracker-list-buttons'>
-                        <button class="edit-btn">Edit</button>
-                        <button class="delete-btn">Delete</button>
-                    </div>
-                </div>
-            </li>`;
     }
 }
