@@ -88,18 +88,9 @@ class ExpenseTracker {
             });
             
             // Add action buttons
-            const actions = document.createElement('div');
-            actions.className = 'exp-tracker-modal-actions';
+            const actionsDiv = this.initModalActionsDiv(config);
             
-            const submitButton = document.createElement('button');
-            submitButton.textContent = config.submitText;
-            
-            const cancelButton = document.createElement('button');
-            cancelButton.textContent = 'Cancel';
-            
-            actions.appendChild(submitButton);
-            actions.appendChild(cancelButton);
-            form.appendChild(actions);
+            form.appendChild(actionsDiv);
             
             modalContent.appendChild(form);
             this.modalOverlay.appendChild(modalContent);
@@ -108,6 +99,28 @@ class ExpenseTracker {
             this[`${config.id}`] = modalContent;
             this[`${config.id}Form`] = form;
         });
+    }
+
+    initModalActionsDiv(config) {
+        const actionsDiv = this.createActionDiv();
+        this.createModalActionButtons(config).forEach(button => actionsDiv.appendChild(button));
+        return actionsDiv;
+    }
+
+    createActionDiv() {
+        const actions = document.createElement('div');
+        actions.className = 'exp-tracker-modal-actions';
+        return actions;
+    }
+
+    createModalActionButtons(config) {
+        const submitButton = document.createElement('button');
+        submitButton.textContent = config.submitText;
+        
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = 'Cancel';
+
+        return [submitButton, cancelButton];
     }
 
     showCategoryInput(event, select) {
