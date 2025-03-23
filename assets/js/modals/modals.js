@@ -23,5 +23,21 @@ export const modalConfigs = [
             }
         ],
         submitText: "Add Expense"
+    },
+    {
+        id: "edit-transaction-modal",
+        title: "Edit Transaction",
+        fields: [
+            { name: "description", label: "Description", type: "text" },
+            { name: "amount", label: "Amount", type: "number" },
+            { 
+                name: "category", 
+                label: "Category", 
+                type: "select",
+                isCustom: true,
+                options: ["Food", "Transportation", "Entertainment", "Bills", "Other"]
+            }
+        ],
+        submitText: "Save Changes"
     }
 ];

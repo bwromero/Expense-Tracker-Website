@@ -1,6 +1,5 @@
 import { modalConfigs } from "./modals/modals.js";
 
-
 document.addEventListener('DOMContentLoaded', function () {
     const app = new ExpenseTracker();
     app.init();
@@ -22,6 +21,9 @@ class ExpenseTracker {
         
         // Create modals dynamically
         this.createModals();
+        
+        // Bind methods that need 'this' context
+        this.handleTransactionAction = this.handleTransactionAction.bind(this);
     }
 
     createModals() {
@@ -158,6 +160,9 @@ class ExpenseTracker {
             button.addEventListener('click', (e) => this.handleModalActions(e, button));
         });
         
+        // Add event delegation for transaction actions
+        this.transactionList.addEventListener('click', this.handleTransactionAction);
+        
         this.prevButton.addEventListener('click', () => this.updateDate(-1));
         this.nextButton.addEventListener('click', () => this.updateDate(1));
         this.todayButton.addEventListener('click', () => this.setTodayDate());
@@ -188,7 +193,19 @@ class ExpenseTracker {
         
         const form = button.closest('form');
         const transaction = this.getFormData(form);
-        this.addTransaction(transaction);
+        
+        if (form.dataset.editIndex !== undefined) {
+            // Update existing transaction
+            const index = parseInt(form.dataset.editIndex);
+            this.transactions[index] = transaction;
+            form.removeAttribute('data-edit-index');
+        } else {
+            // Add new transaction
+            this.transactions.push(transaction);
+        }
+        
+        this.saveTransactions();
+        this.renderTransactions();
         this.closeModal();
     }
 
@@ -211,7 +228,7 @@ class ExpenseTracker {
 
     createTransactionHTML(transaction) {
         return `
-            <li>
+            <li data-description="${transaction.description}">
                 <div>
                     <div class='exp-tracker-list-description'>${transaction.description}</div>
                     <div class='exp-tracker-list-metadata'>
@@ -224,15 +241,39 @@ class ExpenseTracker {
                         ${transaction.category ? '-' : '+'} $${transaction.amount}
                     </div>
                     <div class='exp-tracker-list-buttons'>
-                        <button onclick='app.editTransaction("${transaction.description}")'>Edit</button>
-                        <button onclick='app.deleteTransaction("${transaction.description}")'>Delete</button>
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
                     </div>
                 </div>
             </li>`;
     }
 
     editTransaction(description) {
-        console.log(`Editing transaction: ${description}`);
+        // Find the transaction to edit
+        const index = this.transactions.findIndex(t => t.description === description);
+        if (index === -1) return;
+        
+        const transaction = this.transactions[index];
+        const modalId = 'edit-transaction-modal';
+        
+        // Open the edit modal
+        this.openModal(modalId);
+        
+        // Get the form and store the transaction index
+        const form = this[`${modalId}Form`];
+        form.dataset.editIndex = index;
+        
+        // Populate the form fields
+        form.querySelector('[name="description"]').value = transaction.description;
+        form.querySelector('[name="amount"]').value = transaction.amount;
+        
+        // Handle category field if it exists
+        const categorySelect = form.querySelector('[name="category"]');
+        if (categorySelect && transaction.category) {
+            categorySelect.value = transaction.category;
+        } else if (categorySelect) {
+            categorySelect.style.display = transaction.category ? 'block' : 'none';
+        }
     }
 
     deleteTransaction(description) {
@@ -279,5 +320,21 @@ class ExpenseTracker {
         const date = new Date(dateString);
         date.setDate(date.getDate() + days);
         return date.toISOString().split('T')[0];
+    }
+
+    handleTransactionAction(event) {
+        const button = event.target.closest('button');
+        if (!button) return;
+
+        const li = button.closest('li');
+        if (!li) return;
+
+        const description = li.dataset.description;
+        
+        if (button.classList.contains('edit-btn')) {
+            this.editTransaction(description);
+        } else if (button.classList.contains('delete-btn')) {
+            this.deleteTransaction(description);
+        }
     }
 }
