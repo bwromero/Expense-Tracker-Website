@@ -31,6 +31,6 @@ export const modalConfigs = [
             { name: "description", label: "Description", type: "text" },
             { name: "amount", label: "Amount", type: "number" }
         ],
-        submitText: "Add Expense"
+        submitText: "Save changes"
     }
 ];
