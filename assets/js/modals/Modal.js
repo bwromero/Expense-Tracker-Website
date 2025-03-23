@@ -63,6 +63,12 @@ class ModalForm {
         form.className = 'exp-tracker-modal-form';
         form.action = 'submit';
 
+        // Add hidden field for editIndex
+        const hiddenEditIndex = document.createElement('input');
+        hiddenEditIndex.type = 'hidden';
+        hiddenEditIndex.name = 'editIndex';
+        form.appendChild(hiddenEditIndex);
+
         // Add form fields
         this.config.fields.forEach(fieldConfig => {
             const field = new FormField(fieldConfig);
@@ -145,7 +151,7 @@ class ModalForm {
         Object.entries(data).forEach(([key, value]) => {
             const input = this.form.querySelector(`[name="${key}"]`);
             if (input) {
-                input.value = value;
+                input.value = value !== undefined ? value : '';
             }
         });
     }

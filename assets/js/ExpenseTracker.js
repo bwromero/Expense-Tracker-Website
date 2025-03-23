@@ -39,11 +39,15 @@ export class ExpenseTracker {
     }
 
     handleModalSubmit(formData, modalId) {
-        if (formData.editIndex !== undefined) {
+        // Convert editIndex to number if it exists and is not empty
+        const editIndex = formData.editIndex ? parseInt(formData.editIndex) : undefined;
+        
+        // Remove editIndex from formData to keep only transaction data
+        delete formData.editIndex;
+
+        if (editIndex !== undefined) {
             // Update existing transaction
-            const index = parseInt(formData.editIndex);
-            this.transactions[index] = formData;
-            delete this.transactions[index].editIndex;
+            this.transactions[editIndex] = formData;
         } else {
             // Add new transaction
             this.transactions.push(formData);
