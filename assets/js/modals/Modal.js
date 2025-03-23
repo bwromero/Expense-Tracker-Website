@@ -110,13 +110,22 @@ export class Modal {
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(this.form).entries());
+            if (this.form.dataset.editIndex) {
+                formData.editIndex = this.form.dataset.editIndex;
+            }
             this.onSubmit(formData);
             this.close();
         });
 
-        this.form.querySelector('button[type="button"]').addEventListener('click', () => {
-            this.close();
-        });
+        // Find the cancel button specifically by text content
+        const cancelButton = Array.from(this.form.querySelectorAll('button[type="button"]'))
+            .find(button => button.textContent === 'Cancel');
+            
+        if (cancelButton) {
+            cancelButton.addEventListener('click', () => {
+                this.close();
+            });
+        }
     }
 
     showCategoryInput(event, select) {
