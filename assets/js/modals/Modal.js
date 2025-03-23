@@ -106,10 +106,12 @@ class ModalForm {
         const submitButton = document.createElement('button');
         submitButton.textContent = this.config.submitText;
         submitButton.type = 'submit';
+        submitButton.className = 'modal-submit-btn';
         
         const cancelButton = document.createElement('button');
         cancelButton.textContent = 'Cancel';
         cancelButton.type = 'button';
+        cancelButton.className = 'modal-cancel-btn';
         
         actions.appendChild(submitButton);
         actions.appendChild(cancelButton);
@@ -125,7 +127,7 @@ class ModalForm {
             }
         });
 
-        const cancelButton = form.querySelector('button[type="button"]');
+        const cancelButton = form.querySelector('.modal-cancel-btn');
         if (cancelButton) {
             cancelButton.addEventListener('click', () => {
                 if (this.callbacks.onCancel) {
