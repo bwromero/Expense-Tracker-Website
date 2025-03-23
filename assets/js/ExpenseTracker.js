@@ -51,6 +51,7 @@ export class ExpenseTracker {
         
         this.saveTransactions();
         this.renderTransactions();
+        this.modal.close();
     }
 
     handleAddCategory(category, select) {
